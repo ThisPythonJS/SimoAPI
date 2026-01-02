@@ -1,32 +1,49 @@
-import { decode } from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import { botModel } from "../models/Bot";
 import type { Response } from "express";
 import { HttpStatusCode } from "axios";
 import { GENERICS } from "../utils/errors.json";
 
-export const getUserId = async (auth: string | undefined, res: Response) => {
+export const getUserId = async (
+    auth: string | undefined,
+    res: Response
+): Promise<string | void> => {
     const { Unauthorized } = HttpStatusCode;
     const { MISSING_AUTHORIZATION_ERROR, INVALID_AUTH, INVALID_AUTH_PREFIX } =
         GENERICS;
 
-    if (!auth)
-        return res.status(Unauthorized).json(MISSING_AUTHORIZATION_ERROR);
-    if (!/(Bot|User)\s.+/.test(auth))
-        return res.status(Unauthorized).json(INVALID_AUTH_PREFIX);
+    if (!auth) {
+        res.status(Unauthorized).json(MISSING_AUTHORIZATION_ERROR);
+        return;
+    }
+    
+    if (!/(Bot|User)\s.+/.test(auth)) {
+        res.status(Unauthorized).json(INVALID_AUTH_PREFIX);
+        return;
+    }
+
     if (auth.startsWith("User")) {
-        const decoded = decode(auth.slice(5));
+        try {
+            const decoded = verify(
+                auth.slice(5),
+                process.env.JWT_SECRET as string
+            ) as { userId: string };
 
-        if (typeof decoded === "object" && decoded !== null)
-            return decoded.id as string;
-
-        return res.status(Unauthorized).json(INVALID_AUTH);
+            return decoded.userId;
+        } catch (error) {
+            res.status(Unauthorized).json(INVALID_AUTH);
+            return;
+        }
     } else {
         const bot = await botModel.findOne(
             { api_key: auth.slice(4) },
             { owner_id: 1 }
         );
 
-        if (!bot) return res.status(Unauthorized).json(INVALID_AUTH);
+        if (!bot) {
+            res.status(Unauthorized).json(INVALID_AUTH);
+            return;
+        }
 
         return bot.owner_id;
     }

@@ -6,7 +6,7 @@ serviços em geral relacionada com Simo.
 ## Base URL
 
 ```bash
-https://simoapi.camposcloud.app
+https://simo-api.camposcloud.app
 ```
 
 ## Autenticação

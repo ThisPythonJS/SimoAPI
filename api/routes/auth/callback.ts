@@ -4,6 +4,7 @@ import { userModel } from "../../models/User";
 import type { Request, Response } from "express";
 import { GENERICS } from "../../utils/errors.json";
 import { webhooks } from "../../utils/webhooks";
+import { PremiumType } from "../../typings/types";
 
 export const callback = async (req: Request, res: Response) => {
     const {
@@ -30,22 +31,54 @@ export const callback = async (req: Request, res: Response) => {
 
     if (method === "user") {
         try {
-            const userData = verify(
+            const decoded = verify(
                 req.cookies.discordUser,
                 JWT_SECRET as string
-            );
+            ) as { userId: string };
 
-            return res.status(HttpStatusCode.Ok).send(userData);
+            const user = await userModel.findById(decoded.userId, {
+                _id: 1,
+                username: 1,
+                avatar: 1,
+                premium_type: 1,
+            });
+
+            if (!user) {
+                res.clearCookie("discordUser", {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "lax",
+                });
+                return res.status(HttpStatusCode.Unauthorized).json({
+                    message: "Usuário não encontrado. Faça login novamente.",
+                });
+            }
+
+            return res.status(HttpStatusCode.Ok).json({
+                id: user._id,
+                username: user.username,
+                avatar: user.avatar,
+                premium_type: user.premium_type,
+            });
         } catch (error) {
-            return res.status(HttpStatusCode.InternalServerError).json({
-                message: (error as Error).message,
+            res.clearCookie("discordUser", {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
+            });
+            return res.status(HttpStatusCode.Unauthorized).json({
+                message: "Sessão inválida ou expirada",
             });
         }
     }
 
     if (method === "logout") {
         try {
-            res.clearCookie("discordUser");
+            res.clearCookie("discordUser", {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
+            });
 
             return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
         } catch (error) {
@@ -57,7 +90,7 @@ export const callback = async (req: Request, res: Response) => {
 
     if (method === "callback") {
         try {
-            const req = await fetch(
+            const tokenReq = await fetch(
                 "https://discord.com/api/v10/oauth2/token",
                 {
                     method: "POST",
@@ -69,13 +102,13 @@ export const callback = async (req: Request, res: Response) => {
                     ),
                 }
             );
-            const response = await req.json();
+            const response = await tokenReq.json();
 
             if (response.error === "invalid_grant")
                 return res.redirect(AUTH_LINK as string);
 
             const accessToken = response.access_token;
-            const request = await fetch(
+            const userReq = await fetch(
                 "https://discord.com/api/v10/users/@me",
                 {
                     headers: {
@@ -83,24 +116,43 @@ export const callback = async (req: Request, res: Response) => {
                     },
                 }
             );
-            const { username, id, avatar } = await request.json();
+            const discordUser = await userReq.json();
+
+            if (!discordUser.id) {
+                return res
+                    .status(HttpStatusCode.BadRequest)
+                    .json(GENERICS.DISCORD_AUTH_ERROR);
+            }
+
+            const { username, id, avatar } = discordUser;
             const sevenDays = 604800000;
 
-            const token = sign(
-                { username, id, avatar, signed: true },
-                JWT_SECRET as string,
-                {
-                    expiresIn: sevenDays,
-                }
-            );
+            const token = sign({ userId: id }, JWT_SECRET as string, {
+                expiresIn: sevenDays,
+            });
 
-            await userModel.findOneAndUpdate(
-                { _id: id },
-                { username, avatar },
-                { new: true, upsert: true }
-            );
+            const existingUser = await userModel.findById(id);
 
-            res.cookie("discordUser", token, { maxAge: sevenDays });
+            if (existingUser) {
+                await userModel.findByIdAndUpdate(id, {
+                    username,
+                    avatar,
+                });
+            } else {
+                await userModel.create({
+                    _id: id,
+                    username,
+                    avatar,
+                    premium_type: PremiumType.None,
+                });
+            }
+
+            res.cookie("discordUser", token, {
+                maxAge: sevenDays,
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "lax",
+            });
 
             res.redirect(REDIRECT_AUTH as string);
 
@@ -110,7 +162,7 @@ export const callback = async (req: Request, res: Response) => {
                 token: token,
                 username: username,
             });
-        } catch {
+        } catch (error) {
             res.status(HttpStatusCode.BadRequest).json(
                 GENERICS.DISCORD_AUTH_ERROR
             );
