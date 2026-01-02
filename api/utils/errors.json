@@ -1,0 +1,337 @@
+{
+    "BOT": {
+        "UNKNOWN_BOT": {
+            "message": "Unknown bot",
+            "code": 1001
+        },
+        "BOT_ALREADY_EXISTS": {
+            "message": "The bot already exists",
+            "code": 1002
+        },
+        "CANNOT_GET_BOT_VOTES": {
+            "message": "Could not get bot votes",
+            "code": 1003
+        },
+        "USER_IS_NOT_A_BOT": {
+            "message": "The user is not a bot",
+            "code": 1004
+        },
+        "BOT_CANNOT_VOTE_IN_A_BOT": {
+            "message": "A bot cannot vote for a bot or itself",
+            "code": 1004
+        },
+        "COOLDOWN_VOTE": {
+            "message": "You are on cooldown, wait {ms}",
+            "code": 1006
+        },
+        "NOT_BOT_OWNER": {
+            "message": "You are not this bot owner",
+            "code": 1007
+        },
+        "BOT_CREATE_LIMIT_ERROR": {
+            "message": "You reached the limit of bots",
+            "code": 1008
+        },
+        "ONLY_BOT_OWNER_CAN_VIEW_API_KEY_ERROR": {
+            "message": "Only the bot owner can view the api-key of this bot",
+            "code": 1009
+        },
+        "WEBHOOK_URL_IS_NOT_DEFINED": {
+            "message": "Webhook URL not found",
+            "code": 1010
+        },
+        "API_KEY_IS_REQUIRED_TO_USE_WEBHOOK": {
+            "message": "Api key is required to use webhook URL",
+            "code": 1011
+        },
+        "UNNAPROVED_BOT_ACTION_ERROR": {
+            "message": "No actions can be performed with an unapproved bot",
+            "code": 1012
+        },
+        "UNKNOWN_API_KEY": {
+            "message": "Unknwon API key",
+            "code": 1013
+        }
+    },
+    "GENERICS": {
+        "INVALID_AUTH": {
+            "message": "Invalid authenticator",
+            "code": 2001
+        },
+        "SOME_PROPERTIES_IS_MISSING": {
+            "message": "Some properties is missing",
+            "code": 2002
+        },
+        "MANY_REQUEST": {
+            "message": "Many requests made in less than 1 minute",
+            "code": 2003
+        },
+        "DISCORD_AUTH_ERROR": {
+            "message": "Authentication error with Discord",
+            "code": 2004
+        },
+        "NO_QUERY_IN_BODY": {
+            "message": "No query was provided in body",
+            "code": 2005
+        },
+        "INTERNAL_SERVER_ERROR": {
+            "message": "An internal server error ocurred, try again",
+            "code": 2006
+        },
+        "SUCCESS": { "message": "Success!", "code": 2050 },
+        "MISSING_USER": { "message": "Missing user property", "code": 2007 },
+        "INVALID_PROPS": {
+            "message": "Some properties are wrong",
+            "code": 2008
+        },
+        "MISSING_BODY": {
+            "message": "Missing body",
+            "code": 2009
+        },
+        "METHOD_NOT_ALLOWED": {
+            "message": "Method not allowed",
+            "code": 2008
+        },
+        "BAD_ROUTE": {
+            "message": "Bad route",
+            "code": 2009
+        },
+        "MISSING_AUTHORIZATION_ERROR": {
+            "message": "Authorization header is missing. Use an api-key or Json Web Token",
+            "code": 2010
+        },
+        "UPDATE_VALUE_ERROR": {
+            "message": "The provided value for the key is identical to the current value",
+            "code": 2011
+        },
+        "INVALID_AUTH_PREFIX": {
+            "message": "Invalid auth prefix",
+            "code": 2012
+        },
+        "INVALID_JSON_BODY": {
+            "message": "Invalid JSON body",
+            "code": 2013
+        }
+    },
+    "GUILD": {
+        "GUILD_NOT_FOUND": { "message": "Unknown guild", "code": 3001 },
+        "GUILD_ALREADY_EXISTS": {
+            "message": "The guild already exists",
+            "code": 3002
+        },
+        "NOT_GUILD_OWNER": {
+            "message": "You are not this guild owner",
+            "code": 3003
+        }
+    },
+    "FEEDBACK": {
+        "THE_USER_ALREADY_SENT": {
+            "message": "The user has already sent the feedback",
+            "code": 4001
+        },
+        "UNKNOWN_FEEDBACK": { "message": "Unknown feedback", "code": 4002 },
+        "UNKNOWN_USER": {
+            "message": "Cannot send a feedback without user",
+            "code": 4003
+        },
+        "NO_FEEDBACKS": {
+            "message": "This bot has no feedbacks",
+            "code": 4050
+        },
+        "CANNOT_REPLY_WHEN_CREATE": {
+            "message": "A reply message cannot be created when creating a feedback",
+            "code": 4003
+        },
+        "UNKNOWN_AUTHOR": {
+            "message": "Unknown author",
+            "code": 4005
+        },
+        "BOT_OWNER_CANNOT_SEND_FEEDBACK": {
+            "message": "You can't give feedback on the bot",
+            "code": 4006
+        }
+    },
+    "USER": {
+        "UNKNOWN_USER": { "message": "Unknown user", "code": 5001 },
+        "MISSING_NOTIFICATION_ID": {
+            "message": "Missing notification Id",
+            "code": 5002
+        },
+        "UNKNOWN_NOTIFICATION": {
+            "message": "Unknown notification",
+            "code": 5003
+        },
+        "NO_NOTIFICATIONS": {
+            "message": "This user has no notifications",
+            "code": 5004
+        },
+        "INVALID_BODY_TO_UPDATE": {
+            "message": "Only the 'bio' key can be updated",
+            "code": 5005
+        },
+        "INVALID_BIO_LENGTH": {
+            "message": "The bio length must be greater than 0 and less than 200 characters",
+            "code": 5006
+        }
+    },
+    "TEAM": {
+        "UNKNOWN_TEAM": {
+            "message": "Unknown team",
+            "code": 6001
+        },
+        "USER_REACHED_TEAM_LIMIT": {
+            "message": "You reached the limit of teams",
+            "code": 6002
+        },
+        "BOT_ALREADY_IN_A_TEAM": {
+            "message": "The bot already belongs to a team",
+            "code": 6003
+        },
+        "BOT_ALREADY_ADDED": {
+            "message": "This bot cannot join in a team",
+            "code": 6004
+        },
+        "USER_HAS_NO_TEAM": {
+            "message": "The user does not belongs to a team",
+            "code": 6005
+        },
+        "AUTHOR_IS_NOT_A_MEMBER": {
+            "message": "You don't belong to this team",
+            "code": 6006
+        },
+        "USER_IS_READONLY": {
+            "message": "Your role is read-only",
+            "code": 6007
+        },
+        "ONLY_THE_OWNER_CAN_DELETE": {
+            "message": "Only the team owner can delete the team",
+            "code": 6008
+        },
+        "INVALID_INVITE_HASH": {
+            "message": "Invalid invite",
+            "code": 6009
+        },
+        "ALREADY_A_MEMBER": {
+            "message": "User is already a member",
+            "code": 6010
+        },
+        "NO_INVITE_WITH_GET": {
+            "message": "The GET method does not support invite parameter",
+            "code": 6011
+        },
+        "ONLY_THE_OWNER_CAN_TRANSFER": {
+            "message": "Only the team owner can transfer the ownership",
+            "code": 6012
+        },
+        "USER_IS_NOT_A_MEMBER": {
+            "message": "User is not a member",
+            "code": 6013
+        },
+        "CANNOT_TRANSFER_TO_YOURSELF": {
+            "message": "You cannot transfer the ownership to yourself",
+            "code": 6014
+        },
+        "CANT_REMOVE_THE_OWNER": {
+            "message": "Cannot remove the team owner",
+            "code": 6015
+        },
+        "CANNOT_REMOVE_YOURSELF": {
+            "message": "You cannot remove yourself",
+            "code": 6016
+        },
+        "CANNOT_REMOVE_AN_ADM": {
+            "message": "You can't remove an administrator",
+            "code": 6017
+        },
+        "MISSING_MEMBER_ID_TO_REMOVE": {
+            "message": "Cannot remove a member without 'member_id' in body",
+            "code": 6018
+        },
+        "ONLY_BOT_OWNER_CAN_ADD_IT": {
+            "message": "Only the owner of this bot can add the bot to the team",
+            "code": 6019
+        },
+        "CANT_UPDATE_YOURSELF": {
+            "message": "You can't update yourself",
+            "code": 6020
+        },
+        "CANT_UPDATE_THIS_MEMBER": {
+            "message": "You can't update this member",
+            "code": 6021
+        },
+        "NEW_PERMISSION_MUST_DIFFER_FROM_CURRENT": {
+            "message": "New permission must differ from the current one",
+            "code": 6022
+        },
+        "AUDIT_LOG_VIEW_PERMISSION_ERROR": {
+            "message": "Unauthorized to view team's audit log",
+            "code": 6023
+        },
+        "MISSING_PERMISSION": {
+            "message": "Missing permission",
+            "code": 6024
+        },
+        "BOT_ALREADY_ADDED_TO_TEAM": {
+            "message": "Bot is already added to this team",
+            "code": 6025
+        },
+        "BOT_LIMIT_EXCEEDED_ERROR": {
+            "message": "Limit reached. The maximum number of bots allowed in the team is 3",
+            "code": 6026
+        },
+        "MISSING_BOTS_ID_ERROR": {
+            "message": "Missing 'bots_id' property in body",
+            "code": 6027
+        },
+        "NO_BOTS_IN_TEAM_ERROR": {
+            "message": "There are no bots in the team",
+            "code": 6028
+        },
+        "UNKNOWN_AUDIT_LOGS": {
+            "message": "Unknown audit logs",
+            "code": 6029
+        },
+        "VANITY_URL_MUST_DIFFER_FROM_CURRENT": {
+            "message": "New vanity url code must differ from the current one",
+            "code": 6030
+        },
+        "VANITY_URL_IS_ALREADY_BEING_USED": {
+            "message": "This vanity URL is already being used",
+            "code": 6031
+        },
+        "ONLY_OWNER_CAN_UPDATE_VANITY_URL": {
+            "message": "Only team owner can update vanity url code",
+            "code": 6032
+        },
+        "OWNER_MUST_HAVE_ADVANCED_PREMIUM": {
+            "message": "The owner must have advanced premium to update vanity url",
+            "code": 6033
+        },
+        "MEMBERS_LIMIT_EXCEEDED_ERROR": {
+            "message": "Members limit was exceeded",
+            "code": 6034
+        },
+        "TEAM_LIMIT_EXCEEDED": {
+            "message": "Team limit exceeded. Go premium to increase limit",
+            "code": 6035
+        },
+        "AUDIT_LOG_REASON_LIMIT_EXCEEDED": {
+            "message": "Audit log reason limit exceeded",
+            "code": 6036
+        },
+        "UNKNOWN_TEAM_VANITY_URL": {
+            "message": "Unknown vanity URL",
+            "code": 6037
+        }
+    },
+    "SOCKET": {
+        "INVALID_EVENTS": {
+            "message": "Invalid array of events",
+            "code": 7001
+        },
+        "UNKNOWN_CONNECTION": {
+            "message": "Unknown connection",
+            "code": 7002
+        }
+    }
+}

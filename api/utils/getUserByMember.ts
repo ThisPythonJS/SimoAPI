@@ -1,0 +1,23 @@
+import type { Document } from "mongoose";
+import type { TeamMember, UserStructure } from "../typings/types";
+
+export const getUserByMember = (
+    member: TeamMember,
+    users: (Document<unknown, {}, UserStructure> &
+        UserStructure &
+        Required<{
+            _id: string;
+        }>)[]
+) => {
+    const user = users.find(({ _id: userId }) => userId === member.id);
+
+    if (!user) return member;
+
+    return {
+        id: member.id,
+        permission: member.permission,
+        username: user.username,
+        avatar: user.avatar,
+        joined_at: member.joined_at,
+    };
+};
