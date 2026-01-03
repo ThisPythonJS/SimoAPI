@@ -49,8 +49,8 @@ app.set("trust proxy", 1);
 app.use(
     express.json({ strict: true }),
     cors({
-        credentials: true,
-        origin: ["https://simo.camposcloud.app", "https://simo-api.camposcloud.app"],
+        origin: "https://simo.camposcloud.app",
+        credentials: true
     }),
     cookieParser(),
     (_req, _res, next) => {
