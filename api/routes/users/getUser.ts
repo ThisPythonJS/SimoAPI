@@ -17,52 +17,43 @@ const cache = new Cache<
 
 export const getUser = async (req: Request, res: Response) => {
     console.log(cache);
-
     const { method } = req.params;
     let authorId: string | undefined;
-
+    
     if (["@me", "notifications"].includes(method)) {
-        authorId = (await getUserId(req.headers.authorization, res)) as
+        authorId = (await getUserId(req.headers.authorization, res, req)) as
             | string
             | undefined;
-
         if (typeof authorId !== "string") return;
-
+        
         if (method === "@me") {
             if (cache.has(authorId))
                 return res.status(HttpStatusCode.Ok).json(cache.get(authorId));
-
             const me = await userModel.findById(authorId, { __v: 0 });
-
             if (!me)
                 return res
                     .status(HttpStatusCode.NotFound)
                     .json(USER.UNKNOWN_USER);
-
             const { _id: id, ...userData } = me.toObject();
             const data = { id, ...userData };
-
             cache.set(authorId, data);
-
             return res.status(HttpStatusCode.Ok).json(data);
         }
-
         return fetchUserNotifications(res, authorId);
     }
+    
     if (!method)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
+    
     if (cache.has(method))
         return res.status(HttpStatusCode.Ok).json(cache.get(method));
-
+    
     const user = await userModel.findById(method, { __v: 0 });
-
     if (!user)
         return res.status(HttpStatusCode.NotFound).json(USER.UNKNOWN_USER);
-
+    
     const { _id: id, ...userData } = user.toObject();
     const data = { id, ...userData };
-
     cache.set(method, data);
-
     return res.status(HttpStatusCode.Ok).json(data);
 };

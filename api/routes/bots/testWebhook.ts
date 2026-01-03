@@ -14,7 +14,7 @@ export const testWebhook = async (req: Request, res: Response) => {
 
     if (!bot) return res.status(HttpStatusCode.NotFound).json(BOT.UNKNOWN_BOT);
 
-    const userId = await getUserId(req.headers.authorization, res);
+    const userId = await getUserId(req.headers.authorization, res, req);
 
     if (typeof userId !== "string") return;
     if (userId !== bot.owner_id)

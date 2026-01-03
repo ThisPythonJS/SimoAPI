@@ -14,7 +14,7 @@ import { getTeamVanityURL } from "./getTeamVanityURL";
 
 export const getTeam = async (req: Request, res: Response) => {
     const { teamId, inviteCode } = req.params;
-    const userId = await getUserId(req.headers.authorization, res);
+    const userId = await getUserId(req.headers.authorization, res, req);
 
     if (typeof userId !== "string") return;
     if (teamId === "@all") return fetchUserTeams(res, userId);

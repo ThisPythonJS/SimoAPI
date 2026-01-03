@@ -1,16 +1,26 @@
 import { verify } from "jsonwebtoken";
 import { botModel } from "../models/Bot";
-import type { Response } from "express";
+import type { Request, Response } from "express";
 import { HttpStatusCode } from "axios";
 import { GENERICS } from "../utils/errors.json";
 
-export const getUserId = async (
-    auth: string | undefined,
-    res: Response
-): Promise<string | void> => {
+export const getUserId = async (auth: string | undefined, res: Response, req?: Request): Promise<string | void> => {
     const { Unauthorized } = HttpStatusCode;
     const { MISSING_AUTHORIZATION_ERROR, INVALID_AUTH, INVALID_AUTH_PREFIX } =
         GENERICS;
+
+    if (!auth && req?.cookies?.discordUser) {
+        try {
+            const decoded = verify(
+                req.cookies.discordUser,
+                process.env.JWT_SECRET as string
+            ) as { userId: string };
+            return decoded.userId;
+        } catch (error) {
+            res.status(Unauthorized).json({ message: "Token inválido ou expirado" });
+            return;
+        }
+    }
 
     if (!auth) {
         res.status(Unauthorized).json(MISSING_AUTHORIZATION_ERROR);

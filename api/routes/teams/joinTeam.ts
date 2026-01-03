@@ -18,7 +18,7 @@ import { getSocket } from "../../utils/getSocket";
 import { makeEventData } from "../../utils/makeEventData";
 
 export const joinTeam = async (req: Request, res: Response) => {
-    const userId = await getUserId(req.headers.authorization, res);
+    const userId = await getUserId(req.headers.authorization, res, req);
 
     if (typeof userId !== "string") return;
 

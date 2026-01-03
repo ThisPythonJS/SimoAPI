@@ -68,7 +68,7 @@ export const getBot = async (req: Request, res: Response) => {
     if (method === "api-key") return fetchAPIKey(req, res);
     if (method === "feedbacks") return fetchBotFeedbacks(req, res);
     if (!botId) {
-        const userId = await getUserId(req.headers.authorization, res);
+        const userId = await getUserId(req.headers.authorization, res, req);
 
         if (typeof userId !== "string") return;
 

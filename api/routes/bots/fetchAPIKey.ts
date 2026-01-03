@@ -16,7 +16,7 @@ export const fetchAPIKey = async (req: Request, res: Response) => {
             .status(HttpStatusCode.Forbidden)
             .json(BOT.UNNAPROVED_BOT_ACTION_ERROR);
 
-    const userId = await getUserId(req.headers.authorization, res);
+    const userId = await getUserId(req.headers.authorization, res, req);
 
     if (typeof userId !== "string") return;
     if (userId !== bot.owner_id)

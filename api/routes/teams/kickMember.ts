@@ -20,7 +20,7 @@ export const kickMember = async (req: Request, res: Response) => {
     if (!team)
         return res.status(HttpStatusCode.NotFound).json(TEAM.UNKNOWN_TEAM);
 
-    const authorId = await getUserId(req.headers.authorization, res);
+    const authorId = await getUserId(req.headers.authorization, res, req);
 
     if (typeof authorId !== "string") return;
 
