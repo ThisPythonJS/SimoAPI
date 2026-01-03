@@ -18,6 +18,12 @@ export const callback = async (req: Request, res: Response) => {
     } = process.env;
     const { code } = req.query;
 
+    const codeParam = Array.isArray(code) ? code[0] : code;
+
+    if (!codeParam) {
+      return res.redirect(AUTH_LINK as string);
+    }
+  
     const data = {
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET as string,
@@ -44,11 +50,12 @@ export const callback = async (req: Request, res: Response) => {
             });
 
             if (!user) {
-                res.clearCookie("discordUser", {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
-                    sameSite: "lax",
-                });
+              res.clearCookie("discordUser", {
+                  httpOnly: true,
+                  secure: true,
+                  sameSite: "none",
+                  domain: ".camposcloud.app",
+              });
                 return res.status(HttpStatusCode.Unauthorized).json({
                     message: "Usuário não encontrado. Faça login novamente.",
                 });
@@ -63,8 +70,9 @@ export const callback = async (req: Request, res: Response) => {
         } catch (error) {
             res.clearCookie("discordUser", {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "lax",
+                secure: true,
+                sameSite: "none",
+                domain: ".camposcloud.app",
             });
             return res.status(HttpStatusCode.Unauthorized).json({
                 message: "Sessão inválida ou expirada",
@@ -76,8 +84,9 @@ export const callback = async (req: Request, res: Response) => {
         try {
             res.clearCookie("discordUser", {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "lax",
+                secure: true,
+                sameSite: "none",
+                domain: ".camposcloud.app",
             });
 
             return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
@@ -150,8 +159,9 @@ export const callback = async (req: Request, res: Response) => {
             res.cookie("discordUser", token, {
                 maxAge: sevenDays,
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "lax",
+                secure: true,
+                sameSite: "none",
+                domain: ".camposcloud.app",
             });
 
             res.redirect(REDIRECT_AUTH as string);
