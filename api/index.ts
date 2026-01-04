@@ -38,6 +38,8 @@ import { makeEventData } from "./utils/makeEventData";
 
 loadEnv();
 
+// teste
+
 const app = express();
 
 const limiter = rateLimit({
