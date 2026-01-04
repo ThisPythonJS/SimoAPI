@@ -1,0 +1,61 @@
+name: 🚀 Deploy API
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🚀 Deploy API to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            echo "Deploying API..."
+            
+            cd /home/simo/api
+            
+            if [ -f .env ]; then
+              cp .env .env.backup
+              echo ".env backup criado"
+            fi
+            
+            echo "Pulling latest changes..."
+            git fetch origin
+            git reset --hard origin/main
+            
+            if [ -f .env.backup ]; then
+              mv .env.backup .env
+              echo ".env restaurado"
+            fi
+            
+            echo "Rebuilding API..."
+            cd /home/simo/deploy-config
+            docker-compose build api
+            docker-compose up -d api
+            
+            echo "Aguardando API iniciar..."
+            sleep 5
+            
+            echo "Status:"
+            docker-compose ps api
+            docker-compose logs --tail=20 api
+            
+            echo "API deploy concluído em $(date)"
+      
+      - name: Success
+        if: success()
+        run: echo "API deployada com sucesso!"
+      
+      - name: Failed
+        if: failure()
+        run: echo "Deploy falhou!"
