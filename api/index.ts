@@ -49,7 +49,7 @@ app.set("trust proxy", 1);
 app.use(
     express.json({ strict: true }),
     cors({
-        origin: "https://simo.camposcloud.app",
+        origin: "https://simobotlist.online",
         credentials: true
     }),
     cookieParser(),
