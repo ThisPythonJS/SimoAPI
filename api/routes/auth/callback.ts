@@ -54,7 +54,6 @@ export const callback = async (req: Request, res: Response) => {
                   httpOnly: true,
                   secure: true,
                   sameSite: "none",
-                  domain: ".camposcloud.app",
               });
                 return res.status(HttpStatusCode.Unauthorized).json({
                     message: "Usuário não encontrado. Faça login novamente.",
@@ -72,7 +71,6 @@ export const callback = async (req: Request, res: Response) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
-                domain: ".camposcloud.app",
             });
             return res.status(HttpStatusCode.Unauthorized).json({
                 message: "Sessão inválida ou expirada",
@@ -86,7 +84,6 @@ export const callback = async (req: Request, res: Response) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
-                domain: ".camposcloud.app",
             });
 
             return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
@@ -161,7 +158,6 @@ export const callback = async (req: Request, res: Response) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
-                domain: ".camposcloud.app",
             });
 
             res.redirect(REDIRECT_AUTH as string);
