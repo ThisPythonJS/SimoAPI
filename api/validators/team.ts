@@ -6,14 +6,13 @@ export const createTeamValidator = object({
     name: string()
         .required("\"name\" property is missing")
         .min(3, "Team name must be greater than or equal to 3")
-        .max(15, "Team name must be less than or equal to 15")
-        .required("\"name\" property is missing"),
+        .max(15, "Team name must be less than or equal to 15"),
     avatar_url: string()
         .required("\"avatar_url\" property is missing")
-        .url("Invalid avatar URL")
-        .test("valid-image-url", "Not a well-formed image URL", async (url) => {
-            return url ? await isImage(url) : true;
-        }),
+        .url("Invalid avatar URL"),
+        // .test("valid-image-url", "Not a well-formed image URL", async (url) => {
+        //     return url ? await isImage(url) : true;
+        // }),
     description: string()
         .min(5, "Description must be greater than or equal to 5")
         .max(50, "Description must be less than or equal to 50"),
