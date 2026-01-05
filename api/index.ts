@@ -45,25 +45,77 @@ const limiter = rateLimit({
     limit: 200,
 });
 
+const allowedOrigins = [
+    "https://simobotlist.online",
+    "https://api.simobotlist.online",
+    "https://simo-botlist.vercel.app",
+    "http://localhost:3000",
+    "https://simo.camposcloud.app",
+    "https://simo-api.camposcloud.app"
+];
+
+const corsOptions = {
+    origin: function (origin: string | undefined, callback: Function) {
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "X-Requested-With",
+        "Accept",
+        "Origin",
+        "X-Audit-Log-Reason",
+    ],
+    exposedHeaders: ["Set-Cookie"],
+    maxAge: 86400,
+};
+
 app.set("trust proxy", 1);
+
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    
+    if (origin && allowedOrigins.includes(origin)) {
+        res.header("Access-Control-Allow-Origin", origin);
+        res.header("Access-Control-Allow-Credentials", "true");
+        res.header(
+            "Access-Control-Allow-Methods",
+            "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+        );
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization, X-Requested-With, Accept, Origin, X-Audit-Log-Reason"
+        );
+        res.header("Access-Control-Expose-Headers", "Set-Cookie");
+    }
+    
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(200);
+    }
+    
+    next();
+});
+
 app.use(
     express.json({ strict: true }),
-    cors({
-        origin: ["https://simobotlist.online", "https://simo-botlist.vercel.app", "http://localhost:3000", "https://simo-api.camposcloud.app"],
-        credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
-    }),
+    cors(corsOptions),
     cookieParser(),
     (_req, _res, next) => {
         requestCount++;
-
         next();
     },
     limiter
 );
 
-app.get(`${Routes.Banner}/:id`, getBanner)
+app.get(`${Routes.Banner}/:id`, getBanner);
 app.route(Routes.Users)
     .get(getUser)
     .delete(deleteNotification)
@@ -86,14 +138,11 @@ app.route(Routes.Teams)
 app.route(Routes.Discord).get(fetchDiscordUser);
 
 export let requestCount = 0;
-
 export let uptime: number;
 
 app.listen(process.env.PORT, async () => {
     uptime = Date.now();
-
     await connect(process.env.MONGOOSE_URL as string).catch(console.error);
-
     console.info("API iniciada na porta 80");
 });
 
@@ -101,7 +150,9 @@ process.on("uncaughtException", console.error);
 process.on("unhandledRejection", console.error);
 
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: corsOptions,
+});
 
 export const sockets = [] as SocketConnectionStructure[];
 
@@ -171,7 +222,6 @@ io.on("connect", (socket) => {
 
     socket.on("disconnect", () => {
         const skt = sockets.find((skt) => skt.id === socket.id);
-
         if (skt) skt.connected = false;
     });
 });
