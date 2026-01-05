@@ -38,8 +38,6 @@ import { makeEventData } from "./utils/makeEventData";
 
 loadEnv();
 
-// teste
-
 const app = express();
 
 const limiter = rateLimit({
@@ -51,7 +49,7 @@ app.set("trust proxy", 1);
 app.use(
     express.json({ strict: true }),
     cors({
-        origin: ["https://simobotlist.online", "https://simo-botlist.vercel.app", "http://localhost:3000"],
+        origin: ["https://simobotlist.online", "https://simo-botlist.vercel.app", "http://localhost:3000", "https://simo-api.camposcloud.app"],
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],

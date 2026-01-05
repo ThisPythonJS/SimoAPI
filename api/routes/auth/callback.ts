@@ -21,9 +21,9 @@ export const callback = async (req: Request, res: Response) => {
     const codeParam = Array.isArray(code) ? code[0] : code;
 
     if (!codeParam) {
-      return res.redirect(AUTH_LINK as string);
+        return res.redirect(AUTH_LINK as string);
     }
-  
+
     const data = {
         client_id: CLIENT_ID,
         client_secret: CLIENT_SECRET as string,
@@ -50,11 +50,13 @@ export const callback = async (req: Request, res: Response) => {
             });
 
             if (!user) {
-              res.clearCookie("discordUser", {
-                  httpOnly: true,
-                  secure: true,
-                  sameSite: "none",
-              });
+                res.clearCookie("discordUser", {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
+                    domain: ".simobotlist.online",
+                    path: "/",
+                });
                 return res.status(HttpStatusCode.Unauthorized).json({
                     message: "Usuário não encontrado. Faça login novamente.",
                 });
@@ -71,6 +73,8 @@ export const callback = async (req: Request, res: Response) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
+                domain: ".simobotlist.online",
+                path: "/",
             });
             return res.status(HttpStatusCode.Unauthorized).json({
                 message: "Sessão inválida ou expirada",
@@ -84,6 +88,8 @@ export const callback = async (req: Request, res: Response) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
+                domain: ".simobotlist.online",
+                path: "/",
             });
 
             return res.status(HttpStatusCode.Ok).json(GENERICS.SUCCESS);
@@ -158,6 +164,8 @@ export const callback = async (req: Request, res: Response) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: "none",
+                domain: ".simobotlist.online",
+                path: "/",
             });
 
             res.redirect(REDIRECT_AUTH as string);
