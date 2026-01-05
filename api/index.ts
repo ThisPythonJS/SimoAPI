@@ -47,11 +47,9 @@ const limiter = rateLimit({
 
 const allowedOrigins = [
     "https://simobotlist.online",
-    "https://api.simobotlist.online",
+    "https://www.simobotlist.online",
     "https://simo-botlist.vercel.app",
     "http://localhost:3000",
-    "https://simo.camposcloud.app",
-    "https://simo-api.camposcloud.app"
 ];
 
 const corsOptions = {
@@ -61,7 +59,8 @@ const corsOptions = {
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
-            callback(new Error("Not allowed by CORS"));
+            console.log("Origem bloqueada:", origin);
+            callback(null, false);
         }
     },
     credentials: true,
@@ -74,8 +73,9 @@ const corsOptions = {
         "Origin",
         "X-Audit-Log-Reason",
     ],
-    exposedHeaders: ["Set-Cookie"],
+    exposedHeaders: ["Authorization"],
     maxAge: 86400,
+    optionsSuccessStatus: 200,
 };
 
 app.set("trust proxy", 1);
