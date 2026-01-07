@@ -87,7 +87,7 @@ export let requestCount = 0;
 
 export let uptime: number;
 
-app.listen(process.env.PORT, async () => {
+app.listen(process.env.PORT || 80, async () => {
     uptime = Date.now();
 
     await connect(process.env.MONGOOSE_URL as string).catch(console.error);
