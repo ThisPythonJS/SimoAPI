@@ -89,12 +89,12 @@ export let uptime: number;
 
 // const PORT = process.env.PORT || 80;
 
-app.listen(80, '0.0.0.0', async () => {
+app.listen(3000, '0.0.0.0', async () => {
     uptime = Date.now();
 
     await connect(process.env.MONGOOSE_URL as string).catch(console.error);
 
-    console.info(`API iniciada na porta ${process.env.PORT}`);
+    console.info(`API iniciada na porta 3000`);
 });
 
 process.on("uncaughtException", console.error);
