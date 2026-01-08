@@ -1,7 +1,7 @@
 # Modules
 node_modules/
 package-lock.json
-squarecloud.app
+camposcloud.config
 bun.lock
 
 # Secrets
