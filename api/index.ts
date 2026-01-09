@@ -49,8 +49,8 @@ app.set("trust proxy", 1);
 app.use(
     express.json({ strict: true }),
     cors({
-        credentials: true,
-        origin: ["https://simo.camposcloud.app", "https://simo-api.camposcloud.app"],
+//        credentials: true,
+       //origin: [...]
     }),
     cookieParser(),
     (_req, _res, next) => {
@@ -89,12 +89,12 @@ export let uptime: number;
 
 // const PORT = process.env.PORT || 80;
 
-app.listen(3000, '0.0.0.0', async () => {
+app.listen(3001, '0.0.0.0', async () => {
     uptime = Date.now();
 
     await connect(process.env.MONGOOSE_URL as string).catch(console.error);
 
-    console.info(`API iniciada na porta 3000`);
+    console.info(`API iniciada na porta 3001`);
 });
 
 process.on("uncaughtException", console.error);

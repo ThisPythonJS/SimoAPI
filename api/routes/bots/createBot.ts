@@ -17,11 +17,11 @@ import { makeEventData } from "../../utils/makeEventData";
 
 export const createBot = async (req: Request, res: Response) => {
     const { id: botId, method } = req.params;
-
+//console.log(botId, method)
     if (req.params.wmethod === "test") return testWebhook(req, res);
 
     const { authorization: auth } = req.headers;
-    const userId = await getUserId(auth, res);
+    const userId = await getUserId(auth || "User "+req.cookies.discordUser, res);
 
     if (typeof userId !== "string") return;
 
@@ -51,7 +51,7 @@ export const createBot = async (req: Request, res: Response) => {
 
     const userBots = await botModel.find({ owner_id: userId });
     const user = await userModel.findById(userId);
-
+//console.log(user);
     if (!user) return;
     if (PremiumConfigurations[user.premium_type].bots_count === userBots.length)
         return res
@@ -63,7 +63,7 @@ export const createBot = async (req: Request, res: Response) => {
     const validation = await botSchemaValidator
         .validate(body)
         .catch((error) => error.errors);
-
+//console.log(body, validation)
     if (Array.isArray(validation))
         return res
             .status(HttpStatusCode.BadRequest)

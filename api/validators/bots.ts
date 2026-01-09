@@ -25,7 +25,7 @@ export const botSchemaValidator = object({
             "Cannot have 2 same prefixes",
             (prefixes) => prefixes && new Set(prefixes).size === prefixes.length
         ),
-    verified: boolean().required("\"verified\" property is missing"),
+    verified: boolean().default(false),//required("\"verified\" property is missing"),
     tags: array(
         string().max(24, "Invalid tag name, must be maximum 24 characters long")
     )
