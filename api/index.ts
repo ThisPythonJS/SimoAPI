@@ -67,8 +67,11 @@ app.route(Routes.Users)
     .get(getUser)
     .delete(deleteNotification)
     .patch(updateUser);
-app.route(Routes.Auth).get(callback);
-app.route(Routes.Token).get(getToken).post(createToken);
+app.get('/api/auth/callback', callback);
+app.get('/api/auth/user', callback);
+app.get('/api/auth/logout', callback);
+app.get('/api/auth/token', getToken);
+app.post('/api/auth/api-key/:botId', createToken);
 app.route(Routes.Bots)
     .get(getBot)
     .delete(deleteBotOrFeedback)

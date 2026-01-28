@@ -17,6 +17,7 @@ export const callback = async (req: Request, res: Response) => {
         JWT_SECRET,
     } = process.env;
     const { code } = req.query;
+    const path = req.path;
 
     const codeParam = Array.isArray(code) ? code[0] : code;
 
@@ -35,7 +36,7 @@ export const callback = async (req: Request, res: Response) => {
 
     const { method } = req.params;
 
-    if (method === "user") {
+    if (path.includes("user")) {
         try {
             const decoded = verify(
                 req.cookies.discordUser,
@@ -82,7 +83,7 @@ export const callback = async (req: Request, res: Response) => {
         }
     }
 
-    if (method === "logout") {
+    if (path.includes("logout")) {
         try {
             res.clearCookie("discordUser", {
                 httpOnly: true,
@@ -100,7 +101,7 @@ export const callback = async (req: Request, res: Response) => {
         }
     }
 
-    if (method === "callback") {
+    if (path.includes("callback")) {
         try {
             const tokenReq = await fetch(
                 "https://discord.com/api/v10/oauth2/token",
