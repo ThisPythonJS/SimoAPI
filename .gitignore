@@ -1,0 +1,14 @@
+# Modules
+node_modules/
+package-lock.json
+camposcloud.config
+bun.lock
+
+# Secrets
+.env
+
+# Dist
+dist/
+
+# API tests
+index.spec.ts
