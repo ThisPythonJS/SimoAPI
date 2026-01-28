@@ -7,5 +7,5 @@ export const Routes = {
     VoteStatus: "/api/vote-status/:userId",
     Teams: "/api/teams/:teamId?/:inviteCode?/:targetId?",
     Discord: "/api/discord-user/:userId(\\d+)",
-    Banner: "/api/banner/:id"
+    Banner: "/api/banner"
 };

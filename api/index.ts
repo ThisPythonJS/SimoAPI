@@ -62,7 +62,7 @@ app.use(
     limiter
 );
 
-app.get(`${Routes.Banner}/:id`, getBanner)
+app.get(Routes.Banner, getBanner);
 app.route(Routes.Users)
     .get(getUser)
     .delete(deleteNotification)
