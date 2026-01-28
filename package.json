@@ -6,7 +6,7 @@
     "scripts": {
         "app": "bun api/index.ts",
         "start": "bun api/index.ts",
-        "build": "tsc && node dist/api/index.js",
+        "build": "bun start.simo.ts",
         "lint:fix": "eslint . --fix",
         "test": "tsx index.spec.ts",
         "prettier:fix": "prettier --write \"**/*.{js,ts}\"",
