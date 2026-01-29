@@ -8,8 +8,8 @@
 [![Discord](https://img.shields.io/discord/DISCORD_SERVER_ID?color=7289da&label=Discord&logo=discord&logoColor=white)](https://discord.gg/simo)
 [![License](https://img.shields.io/github/license/ThisPythonJS/SimoAPI)](LICENSE)
 
-**Uma API REST moderna e poderosa para serviços relacionados ao ecossistema Simo**
-
+**Uma API REST moderna e poderosa para serviços relacionados ao ecossistema Simo**  
+**Obrigado ao `furstxd4` por criar um pull request.**
 [Documentação](https://github.com/ThisPythonJS/SimoAPI) • [Servidor Discord](https://discord.gg/simo) • [Simo Botlist](https://simobotlist.online)
 
 </div>
