@@ -89,6 +89,9 @@ export const getStatus = async (_: Request, res: Response) => {
             milliseconds: uptimeMs,
             formatted: `${uptimeDays}d ${uptimeHours}h ${uptimeMinutes}m`,
             started_at: uptime
+        },
+        thanks_to: {
+            furstxd4: "Por ter criado um Pull Request"
         }
     });
 };
